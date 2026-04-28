@@ -85,3 +85,49 @@ export const remove = async (id) => {
   if (error) throw new Error(error.message);
   return { mensaje: 'Pago eliminado correctamente' };
 };
+
+// ── HISTORIAL DE PAGOS POR ORDEN ──────────────────────────
+// Devuelve todos los pagos de una orden + resumen del presupuesto
+export const findByOrden = async (orden_trabajo_id) => {
+  // Pagos de la orden
+  const { data: pagos, error: pError } = await supabase
+    .from('pagos')
+    .select(`
+      *,
+      metodos_pago ( id, nombre )
+    `)
+    .eq('orden_trabajo_id', orden_trabajo_id)
+    .order('fecha_pago', { ascending: false })
+
+  if (pError) throw new Error(pError.message)
+
+  // Presupuesto vinculado a la orden
+  const { data: presupuesto } = await supabase
+    .from('presupuestos')
+    .select(`
+      id,
+      estado_id,
+      mano_de_obra,
+      total_materiales,
+      descuento,
+      total,
+      estados_presupuesto ( nombre, color )
+    `)
+    .eq('orden_trabajo_id', orden_trabajo_id)
+    .maybeSingle()
+
+  // Total cobrado
+  const totalCobrado = pagos.reduce((acc, p) => acc + Number(p.monto || 0), 0)
+  const totalPresupuesto = presupuesto ? Number(presupuesto.total) : 0
+  const saldoPendiente = Math.max(0, totalPresupuesto - totalCobrado)
+
+  return {
+    pagos,
+    presupuesto,
+    resumen: {
+      totalCobrado,
+      totalPresupuesto,
+      saldoPendiente,
+    }
+  }
+}

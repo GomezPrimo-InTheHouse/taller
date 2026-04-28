@@ -1,16 +1,13 @@
-// ============================================================
-// RUTAS DE PAGOS
-// ============================================================
+import { Router } from 'express'
+import * as controller from './pagos.controller.js'
 
-import { Router } from 'express';
-import * as controller from './pagos.controller.js';
+const router = Router()
 
-const router = Router();
+router.get('/orden/:orden_trabajo_id', controller.getByOrden) // ← nueva — antes de /:id
+router.get('/',       controller.getAll)
+router.get('/:id',    controller.getOne)
+router.post('/',      controller.create)
+router.put('/:id',    controller.update)
+router.delete('/:id', controller.remove)
 
-router.get('/',       controller.getAll);    // GET    /api/v1/pagos
-router.get('/:id',    controller.getOne);    // GET    /api/v1/pagos/:id
-router.post('/',      controller.create);    // POST   /api/v1/pagos
-router.put('/:id',    controller.update);    // PUT    /api/v1/pagos/:id
-router.delete('/:id', controller.remove);   // DELETE /api/v1/pagos/:id
-
-export default router;
+export default router

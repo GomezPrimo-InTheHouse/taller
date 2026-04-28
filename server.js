@@ -17,6 +17,7 @@ import materialesRoutes from './src/materiales/materiales.routes.js';
 import presupuestosRoutes from './src/presupuestos/presupuestos.routes.js';
 import pagosRoutes from './src/pagos/pagos.routes.js';
 import authRoutes from './src/auth/auth.routes.js';
+import detallePresupuestoRoutes from './src/detalle-presupuesto/detalle-presupuesto.routes.js'
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use(`${API_PREFIX}/ordenes`,      ordenesRoutes);
 app.use(`${API_PREFIX}/materiales`,   materialesRoutes);
 app.use(`${API_PREFIX}/presupuestos`, presupuestosRoutes);
 app.use(`${API_PREFIX}/pagos`,        pagosRoutes);
+app.use(`${API_PREFIX}/detalle-presupuesto`, detallePresupuestoRoutes)
 
 // ── RUTA BASE ───────────────────────────────────────────────
 app.get('/', (req, res) => {

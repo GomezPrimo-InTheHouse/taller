@@ -50,3 +50,13 @@ export const remove = async (req, res) => {
     return fail(res, e.message);
   }
 };
+
+// GET /api/v1/pagos/orden/:orden_trabajo_id
+export const getByOrden = async (req, res) => {
+  try {
+    const data = await service.findByOrden(req.params.orden_trabajo_id)
+    return ok(res, data)
+  } catch (e) {
+    return fail(res, e.message)
+  }
+}
