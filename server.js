@@ -30,11 +30,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS — permite que el frontend React se comunique con el backend
+
+
 app.use(cors({
-  origin: ['http://localhost:5173'], // Puerto por defecto de Vite
+  origin: [
+    'http://localhost:5173',
+    'https://taller-frontend.vercel.app', // ← tu URL real de Vercel
+  ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true,
-}));
+}))
+
 // Morgan — registra cada request en consola
 // 'dev' muestra: método, ruta, status, tiempo de respuesta
 app.use(morgan('dev')); // ← agregá esta línea
